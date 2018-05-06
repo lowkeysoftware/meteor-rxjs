@@ -1,10 +1,9 @@
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('rxjs')) :
-	typeof define === 'function' && define.amd ? define(['exports', 'rxjs'], factory) :
-	(factory((global.meteor = global.meteor || {}, global.meteor.rxjs = {}),global.rxjs));
-}(this, (function (exports,rxjs) { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('rxjs/Observable'), require('rxjs/Subject'), require('rxjs/Subscriber')) :
+	typeof define === 'function' && define.amd ? define(['exports', 'rxjs/Observable', 'rxjs/Subject', 'rxjs/Subscriber'], factory) :
+	(factory((global.meteor = global.meteor || {}, global.meteor.rxjs = {}),global.rxjs.Observable,global.rxjs.Subject,global.rxjs.Subscriber));
+}(this, (function (exports,Observable,Subject,Subscriber) { 'use strict';
 
-'use strict';
 var subscribeEvents = ['onReady', 'onError', 'onStop'];
 function isMeteorCallbacks(callbacks) {
     return _.isFunction(callbacks) || isCallbacksObject(callbacks);
@@ -56,7 +55,6 @@ function removeObserver(observers, observer, onEmpty) {
 }
 var gZone = g.Zone ? g.Zone.current : fakeZone;
 
-'use strict';
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -95,7 +93,7 @@ var ObservableCursor = /** @class */ (function (_super) {
         }) || this;
         _this._data = [];
         _this._observers = [];
-        _this._countObserver = new rxjs.Subject();
+        _this._countObserver = new Subject.Subject();
         _this._isDataInitinialized = false;
         _.extend(_this, _.omit(cursor, 'count', 'map'));
         _this._cursor = cursor;
@@ -228,7 +226,7 @@ var ObservableCursor = /** @class */ (function (_super) {
         }); });
     };
     return ObservableCursor;
-}(rxjs.Observable));
+}(Observable.Observable));
 
 (function (MongoObservable) {
     'use strict';
@@ -441,7 +439,7 @@ var ObservableCursor = /** @class */ (function (_super) {
             return this._collection.findOne.apply(this._collection, arguments);
         };
         Collection.prototype._createObservable = function (observers) {
-            return rxjs.Observable.create(function (observer) {
+            return Observable.Observable.create(function (observer) {
                 observers.push(observer);
                 return function () {
                     removeObserver(observers, observer);
@@ -477,7 +475,6 @@ var ObservableCursor = /** @class */ (function (_super) {
  * @property {Boolean} multi - True to modify all matching documents;
  * @property {Boolean} upsert - True to use upsert logic.
  */
-
 'use strict';
 var liveSubscriptions = [];
 function throwInvalidCallback(method) {
@@ -536,7 +533,7 @@ var MeteorObservable = /** @class */ (function () {
             throwInvalidCallback('MeteorObservable.call');
         }
         var zone = forkZone();
-        return rxjs.Observable.create(function (observer) {
+        return Observable.Observable.create(function (observer) {
             Meteor.call.apply(Meteor, [name].concat(args.concat([
                 function (error, result) {
                     zone.run(function () {
@@ -631,7 +628,7 @@ var MeteorObservable = /** @class */ (function () {
             ])));
         };
         var subHandler = null;
-        return rxjs.Observable.create(function (observer) {
+        return Observable.Observable.create(function (observer) {
             observers.push(observer);
             // Execute subscribe lazily.
             if (subHandler === null) {
@@ -689,7 +686,7 @@ var MeteorObservable = /** @class */ (function () {
             });
         };
         var handler = null;
-        return rxjs.Observable.create(function (observer) {
+        return Observable.Observable.create(function (observer) {
             observers.push(observer);
             // Execute autorun lazily.
             if (handler === null) {
@@ -703,7 +700,6 @@ var MeteorObservable = /** @class */ (function () {
     return MeteorObservable;
 }());
 
-'use strict';
 var __extends$1 = (undefined && undefined.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||

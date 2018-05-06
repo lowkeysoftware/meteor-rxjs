@@ -1,3 +1,26 @@
+<a name="0.4.9"></a>
+## 0.4.9 (2018-03-17)
+
+* bug fixes ([85383ed](https://github.com/Urigo/mongo-rxjs-observable/commit/85383ed))
+* bump version ([da88a37](https://github.com/Urigo/mongo-rxjs-observable/commit/da88a37))
+* change rxjs imports to best practice for better performance ([f4887a5](https://github.com/Urigo/mongo-rxjs-observable/commit/f4887a5))
+* fix version bump ([6b8fead](https://github.com/Urigo/mongo-rxjs-observable/commit/6b8fead))
+* fixes ([05d1e67](https://github.com/Urigo/mongo-rxjs-observable/commit/05d1e67))
+* make dependencies compatible with both angular and meteor ([bcdc720](https://github.com/Urigo/mongo-rxjs-observable/commit/bcdc720))
+* removed old tslint config ([e6530b2](https://github.com/Urigo/mongo-rxjs-observable/commit/e6530b2))
+* Replace 'meteor-typings' with '@types/meteor' ([791ba31](https://github.com/Urigo/mongo-rxjs-observable/commit/791ba31))
+* rollup configuration fixed ([23d1ea5](https://github.com/Urigo/mongo-rxjs-observable/commit/23d1ea5))
+* Store subscriptionIds to handle re-subscriptions ([8ddd5f1](https://github.com/Urigo/mongo-rxjs-observable/commit/8ddd5f1))
+* try to fix meteor typings issue ([e1eb411](https://github.com/Urigo/mongo-rxjs-observable/commit/e1eb411))
+* Update documentation for MeteorObservable ([c7816ba](https://github.com/Urigo/mongo-rxjs-observable/commit/c7816ba))
+* update README.md ([a67078c](https://github.com/Urigo/mongo-rxjs-observable/commit/a67078c))
+* update rollup.config.js ([a5c4565](https://github.com/Urigo/mongo-rxjs-observable/commit/a5c4565))
+* update test script ([e0ff15c](https://github.com/Urigo/mongo-rxjs-observable/commit/e0ff15c))
+* updated all deps and some minor fixes ([58b0fda](https://github.com/Urigo/mongo-rxjs-observable/commit/58b0fda))
+* updated changelog ([cb9697f](https://github.com/Urigo/mongo-rxjs-observable/commit/cb9697f))
+* refactor(deps): renovate pin dependencies packages ([b967636](https://github.com/Urigo/mongo-rxjs-observable/commit/b967636))
+* fix: return empty array when find yield no results ([b09c6af](https://github.com/Urigo/mongo-rxjs-observable/commit/b09c6af))
+
 <a name="0.4.8"></a>
 ## 0.4.8 (2017-09-13)
 * updated all dependencies

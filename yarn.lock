@@ -11,12 +11,13 @@
   resolved "https://registry.yarnpkg.com/@types/connect/-/connect-3.4.31.tgz#1f92d6b117ecc05076c49ecd024f7976e528bad9"
   dependencies:
     "@types/node" "*"
-
-"@types/meteor@^1.4.6":
-  version "1.4.6"
-  resolved "https://registry.yarnpkg.com/@types/meteor/-/meteor-1.4.6.tgz#eca1b7f8933fdaf8fc77a3e0c426bb6889fb1652"
+    
+"@types/meteor@1.4.13":
+  version "1.4.13"
+  resolved "https://registry.yarnpkg.com/@types/meteor/-/meteor-1.4.13.tgz#c49b5e977888d7b563c1baca1f7556345a512694"
   dependencies:
     "@types/connect" "*"
+    "@types/underscore" "*"
 
 "@types/mocha@^2.2.43":
   version "2.2.43"
@@ -1207,6 +1208,10 @@ supports-color@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-2.0.0.tgz#535d045ce6b6363fa40117084629995e9df324c7"
 
+symbol-observable@1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/symbol-observable/-/symbol-observable-1.0.1.tgz#8340fc4702c3122df5d22288f88283f513d3fdd4"
+
 table-layout@^0.4.1:
   version "0.4.2"
   resolved "https://registry.yarnpkg.com/table-layout/-/table-layout-0.4.2.tgz#10e9043c142a1e2d155da7257e478f0ef4981786"
@@ -1298,9 +1303,9 @@ tsutils@^2.8.1:
   dependencies:
     tslib "^1.7.1"
 
-typescript@^2.5.2:
-  version "2.5.2"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.5.2.tgz#038a95f7d9bbb420b1bf35ba31d4c5c1dd3ffe34"
+typescript@2.7.2:
+  version "2.7.2"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.7.2.tgz#2d615a1ef4aee4f574425cdff7026edf81919836"
 
 typical@^2.4.2, typical@^2.6.0:
   version "2.6.0"
@@ -1418,7 +1423,7 @@ yargs@~3.10.0:
     cliui "^2.1.0"
     decamelize "^1.0.0"
     window-size "0.1.0"
-
-zone.js@^0.8.17:
-  version "0.8.17"
-  resolved "https://registry.yarnpkg.com/zone.js/-/zone.js-0.8.17.tgz#4c5e5185a857da8da793daf3919371c5a36b2a0b"
+    
+zone.js@0.8.20:
+  version "0.8.20"
+  resolved "https://registry.yarnpkg.com/zone.js/-/zone.js-0.8.20.tgz#a218c48db09464b19ff6fc8f0d4bb5b1046e185d"

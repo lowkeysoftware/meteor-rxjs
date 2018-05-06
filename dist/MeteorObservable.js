@@ -1,5 +1,4 @@
-'use strict';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 import { isMeteorCallbacks, forkZone, removeObserver } from './utils';
 var liveSubscriptions = [];
 function throwInvalidCallback(method) {
