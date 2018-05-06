@@ -5,3 +5,5 @@ typings
 .npm
 npm-debug.log
 package-lock.json
+*.log
+
