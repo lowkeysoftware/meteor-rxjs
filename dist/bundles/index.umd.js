@@ -479,6 +479,7 @@ var ObservableCursor = /** @class */ (function (_super) {
  */
 
 'use strict';
+var liveSubscriptions = [];
 function throwInvalidCallback(method) {
     throw new Error("Invalid " + method + " arguments:\n     your last param can't be a callback function,\n     please remove it and use \".subscribe\" of the Observable!");
 }
@@ -635,9 +636,23 @@ var MeteorObservable = /** @class */ (function () {
             // Execute subscribe lazily.
             if (subHandler === null) {
                 subHandler = subscribe();
+                if (liveSubscriptions.find(function (sub) { return sub === subHandler.subscriptionId; })) {
+                    // subscription already exists, call observer.next() since Meteor won't.
+                    observer.next();
+                }
+                else {
+                    liveSubscriptions.push(subHandler.subscriptionId);
+                }
             }
             return function () {
-                removeObserver(observers, observer, function () { return subHandler.stop(); });
+                removeObserver(observers, observer, function () {
+                    // remove subscription from liveSubscriptions list
+                    var i = liveSubscriptions.findIndex(function (sub) { return sub === subHandler.subscriptionId; });
+                    if (i > -1) {
+                        liveSubscriptions.splice(i, 1);
+                    }
+                    subHandler.stop();
+                });
             };
         });
     };
@@ -699,9 +714,7 @@ var __extends$1 = (undefined && undefined.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-function zoneOperator(zone) {
-    return this.lift(new ZoneOperator(zone || getZone()));
-}
+var zoneOperator = function (zone) { return function (source) { return source.lift(new ZoneOperator(zone || getZone())); }; };
 var ZoneOperator = /** @class */ (function () {
     function ZoneOperator(zone) {
         this.zone = zone;
@@ -738,7 +751,6 @@ var ZoneSubscriber = /** @class */ (function (_super) {
     };
     return ZoneSubscriber;
 }(rxjs.Subscriber));
-rxjs.Observable.prototype.zone = zoneOperator;
 
 exports.MeteorObservable = MeteorObservable;
 exports.ObservableCursor = ObservableCursor;
