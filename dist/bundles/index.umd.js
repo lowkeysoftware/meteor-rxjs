@@ -1,8 +1,8 @@
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('rxjs/Observable'), require('rxjs/Subject'), require('rxjs/Subscriber')) :
-	typeof define === 'function' && define.amd ? define(['exports', 'rxjs/Observable', 'rxjs/Subject', 'rxjs/Subscriber'], factory) :
-	(factory((global.meteor = global.meteor || {}, global.meteor.rxjs = {}),global.rxjs.Observable,global.rxjs.Subject,global.rxjs.Subscriber));
-}(this, (function (exports,Observable,Subject,Subscriber) { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('rxjs')) :
+	typeof define === 'function' && define.amd ? define(['exports', 'rxjs'], factory) :
+	(factory((global.meteor = global.meteor || {}, global.meteor.rxjs = {}),global.rxjs));
+}(this, (function (exports,rxjs) { 'use strict';
 
 var subscribeEvents = ['onReady', 'onError', 'onStop'];
 function isMeteorCallbacks(callbacks) {
@@ -93,7 +93,7 @@ var ObservableCursor = /** @class */ (function (_super) {
         }) || this;
         _this._data = [];
         _this._observers = [];
-        _this._countObserver = new Subject.Subject();
+        _this._countObserver = new rxjs.Subject();
         _this._isDataInitinialized = false;
         _.extend(_this, _.omit(cursor, 'count', 'map'));
         _this._cursor = cursor;
@@ -226,7 +226,7 @@ var ObservableCursor = /** @class */ (function (_super) {
         }); });
     };
     return ObservableCursor;
-}(Observable.Observable));
+}(rxjs.Observable));
 
 (function (MongoObservable) {
     'use strict';
@@ -439,7 +439,7 @@ var ObservableCursor = /** @class */ (function (_super) {
             return this._collection.findOne.apply(this._collection, arguments);
         };
         Collection.prototype._createObservable = function (observers) {
-            return Observable.Observable.create(function (observer) {
+            return rxjs.Observable.create(function (observer) {
                 observers.push(observer);
                 return function () {
                     removeObserver(observers, observer);
@@ -475,7 +475,7 @@ var ObservableCursor = /** @class */ (function (_super) {
  * @property {Boolean} multi - True to modify all matching documents;
  * @property {Boolean} upsert - True to use upsert logic.
  */
-'use strict';
+
 var liveSubscriptions = [];
 function throwInvalidCallback(method) {
     throw new Error("Invalid " + method + " arguments:\n     your last param can't be a callback function,\n     please remove it and use \".subscribe\" of the Observable!");
@@ -533,7 +533,7 @@ var MeteorObservable = /** @class */ (function () {
             throwInvalidCallback('MeteorObservable.call');
         }
         var zone = forkZone();
-        return Observable.Observable.create(function (observer) {
+        return rxjs.Observable.create(function (observer) {
             Meteor.call.apply(Meteor, [name].concat(args.concat([
                 function (error, result) {
                     zone.run(function () {
@@ -628,7 +628,7 @@ var MeteorObservable = /** @class */ (function () {
             ])));
         };
         var subHandler = null;
-        return Observable.Observable.create(function (observer) {
+        return rxjs.Observable.create(function (observer) {
             observers.push(observer);
             // Execute subscribe lazily.
             if (subHandler === null) {
@@ -686,7 +686,7 @@ var MeteorObservable = /** @class */ (function () {
             });
         };
         var handler = null;
-        return Observable.Observable.create(function (observer) {
+        return rxjs.Observable.create(function (observer) {
             observers.push(observer);
             // Execute autorun lazily.
             if (handler === null) {

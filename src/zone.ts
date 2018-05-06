@@ -1,8 +1,4 @@
-import { Observable } from 'rxjs/Observable';
-import { Operator } from 'rxjs/Operator';
-import { Subscriber } from 'rxjs/Subscriber';
-
-import { TeardownLogic } from 'rxjs/Subscription';
+import { Observable ,  Operator ,  Subscriber } from 'rxjs';
 
 import { getZone } from './utils';
 
@@ -13,7 +9,7 @@ class ZoneOperator<T> implements Operator<T, T> {
   constructor(private zone: Zone) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  call(subscriber: Subscriber<T>, source: any) {
     return source._subscribe(new ZoneSubscriber(subscriber, this.zone));
   }
 }
