@@ -2,6 +2,9 @@ import { Observable ,  Subscriber } from 'rxjs';
 
 import { isMeteorCallbacks, forkZone, removeObserver } from './utils';
 
+import { Meteor } from 'meteor/meteor';
+import { Tracker } from 'meteor/tracker';
+
 let liveSubscriptions = [];
 
 function throwInvalidCallback(method: string) {

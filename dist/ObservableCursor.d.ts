@@ -1,4 +1,5 @@
 import { Observable } from 'rxjs';
+import { Mongo } from 'meteor/mongo';
 export declare class ObservableCursor<T> extends Observable<T[]> {
     private _zone;
     private _data;
