@@ -155,7 +155,7 @@ describe('ObservableCursor', function () {
     let spy = sinon.stub(cursor, 'observeChanges').callsFake(() => {
       return {
         stop: stopSpy
-      }
+      };
     });
 
     let subHandler = observable.subscribe();
