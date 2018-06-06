@@ -2,9 +2,6 @@ import { Observable, Subscriber, Subject } from 'rxjs';
 
 import { gZone, forkZone, removeObserver } from './utils';
 
-import { Tracker } from 'meteor/tracker';
-import { Mongo } from 'meteor/mongo';
-
 export class ObservableCursor<T> extends Observable<T[]> {
   private _zone: Zone;
   private _data: Array<T> = [];

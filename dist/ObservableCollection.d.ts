@@ -1,6 +1,5 @@
 import { Observable } from 'rxjs';
 import { ObservableCursor } from './ObservableCursor';
-import { Mongo } from 'meteor/mongo';
 export declare module MongoObservable {
     interface ConstructorOptions {
         connection?: Object;

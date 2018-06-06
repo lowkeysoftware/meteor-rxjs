@@ -1,7 +1,6 @@
 import { Observable } from 'rxjs';
 import { ObservableCursor } from './ObservableCursor';
 import { removeObserver } from './utils';
-import { Mongo } from 'meteor/mongo';
 export var MongoObservable;
 (function (MongoObservable) {
     /**
@@ -32,7 +31,9 @@ export var MongoObservable;
          *  @param {ConstructorOptions} options - Creation options.
          *  @constructor
          */
-        constructor(nameOrExisting, options) {
+        constructor(nameOrExisting, 
+        // tslint:disable-next-line:align
+        options) {
             if (nameOrExisting instanceof Mongo.Collection) {
                 this._collection = nameOrExisting;
             }
@@ -137,7 +138,11 @@ export var MongoObservable;
          *
          * @see {@link https://docs.meteor.com/api/collections.html#Mongo-Collection-update|update on Meteor documentation}
          */
-        update(selector, modifier, options) {
+        update(selector, 
+        // tslint:disable-next-line:align
+        modifier, 
+        // tslint:disable-next-line:align
+        options) {
             let observers = [];
             let obs = this._createObservable(observers);
             this._collection.update(selector, modifier, options, (error, updated) => {
@@ -161,7 +166,11 @@ export var MongoObservable;
          *
          * @see {@link https://docs.meteor.com/api/collections.html#Mongo-Collection-upsert|upsert on Meteor documentation}
          */
-        upsert(selector, modifier, options) {
+        upsert(selector, 
+        // tslint:disable-next-line:align
+        modifier, 
+        // tslint:disable-next-line:align
+        options) {
             let observers = [];
             let obs = this._createObservable(observers);
             this._collection.upsert(selector, modifier, options, (error, affected) => {

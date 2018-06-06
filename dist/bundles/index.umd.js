@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('rxjs'), require('meteor/mongo'), require('meteor/meteor'), require('meteor/tracker')) :
-    typeof define === 'function' && define.amd ? define(['exports', 'rxjs', 'meteor/mongo', 'meteor/meteor', 'meteor/tracker'], factory) :
-    (factory((global.meteor = global.meteor || {}, global.meteor.rxjs = {}),null,global.Package.mongo,global.Package.meteor,global.Package.tracker));
-}(this, (function (exports,rxjs,mongo,meteor,tracker) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('rxjs')) :
+    typeof define === 'function' && define.amd ? define(['exports', 'rxjs'], factory) :
+    (factory((global.meteor = global.meteor || {}, global.meteor.rxjs = {}),null));
+}(this, (function (exports,rxjs) { 'use strict';
 
     const subscribeEvents = ['onReady', 'onError', 'onStop'];
     function isFunction(fn) {
@@ -244,12 +244,14 @@
              *  @param {ConstructorOptions} options - Creation options.
              *  @constructor
              */
-            constructor(nameOrExisting, options) {
-                if (nameOrExisting instanceof mongo.Mongo.Collection) {
+            constructor(nameOrExisting, 
+            // tslint:disable-next-line:align
+            options) {
+                if (nameOrExisting instanceof Mongo.Collection) {
                     this._collection = nameOrExisting;
                 }
                 else {
-                    this._collection = new mongo.Mongo.Collection(nameOrExisting, options);
+                    this._collection = new Mongo.Collection(nameOrExisting, options);
                 }
             }
             /**
@@ -349,7 +351,11 @@
              *
              * @see {@link https://docs.meteor.com/api/collections.html#Mongo-Collection-update|update on Meteor documentation}
              */
-            update(selector, modifier, options) {
+            update(selector, 
+            // tslint:disable-next-line:align
+            modifier, 
+            // tslint:disable-next-line:align
+            options) {
                 let observers = [];
                 let obs = this._createObservable(observers);
                 this._collection.update(selector, modifier, options, (error, updated) => {
@@ -373,7 +379,11 @@
              *
              * @see {@link https://docs.meteor.com/api/collections.html#Mongo-Collection-upsert|upsert on Meteor documentation}
              */
-            upsert(selector, modifier, options) {
+            upsert(selector, 
+            // tslint:disable-next-line:align
+            modifier, 
+            // tslint:disable-next-line:align
+            options) {
                 let observers = [];
                 let obs = this._createObservable(observers);
                 this._collection.upsert(selector, modifier, options, (error, affected) => {
@@ -511,7 +521,7 @@
             }
             let zone = forkZone();
             return rxjs.Observable.create((observer) => {
-                meteor.Meteor.call(name, ...args.concat([
+                Meteor.call(name, ...args.concat([
                     (error, result) => {
                         zone.run(() => {
                             error ? observer.error(error) :
@@ -586,7 +596,7 @@
             let zone = forkZone();
             let observers = [];
             let subscribe = () => {
-                return meteor.Meteor.subscribe(name, ...args.concat([{
+                return Meteor.subscribe(name, ...args.concat([{
                         onError: (error) => {
                             zone.run(() => {
                                 observers.forEach(observer => observer.error(error));
@@ -652,7 +662,7 @@
             let zone = forkZone();
             let observers = [];
             let autorun = () => {
-                return tracker.Tracker.autorun((computation) => {
+                return Tracker.autorun((computation) => {
                     zone.run(() => {
                         observers.forEach(observer => observer.next(computation));
                     });

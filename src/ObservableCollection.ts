@@ -1,10 +1,7 @@
-import { Observable ,  Subscriber } from 'rxjs';
+import { Observable, Subscriber } from 'rxjs';
 
 import { ObservableCursor } from './ObservableCursor';
 import { removeObserver } from './utils';
-
-import { Meteor } from 'meteor/meteor';
-import { Mongo } from 'meteor/mongo';
 
 export module MongoObservable {
 
@@ -53,7 +50,8 @@ export module MongoObservable {
      *  @constructor
      */
     constructor(nameOrExisting: string | Mongo.Collection<T>,
-                options?: ConstructorOptions) {
+      // tslint:disable-next-line:align
+      options?: ConstructorOptions) {
       if (nameOrExisting instanceof Mongo.Collection) {
         this._collection = nameOrExisting;
       } else {
@@ -171,8 +169,10 @@ export module MongoObservable {
      * @see {@link https://docs.meteor.com/api/collections.html#Mongo-Collection-update|update on Meteor documentation}
      */
     update(selector: Mongo.Selector | Mongo.ObjectID | string,
-           modifier: Mongo.Modifier,
-           options?: { multi?: boolean; upsert?: boolean; }): Observable<number> {
+      // tslint:disable-next-line:align
+      modifier: Mongo.Modifier,
+      // tslint:disable-next-line:align
+      options?: { multi?: boolean; upsert?: boolean; }): Observable<number> {
       let observers: Subscriber<number>[] = [];
       let obs = this._createObservable<number>(observers);
 
@@ -201,8 +201,10 @@ export module MongoObservable {
      * @see {@link https://docs.meteor.com/api/collections.html#Mongo-Collection-upsert|upsert on Meteor documentation}
      */
     upsert(selector: Mongo.Selector | Mongo.ObjectID | string,
-           modifier: Mongo.Modifier,
-           options?: { multi?: boolean; }): Observable<number> {
+      // tslint:disable-next-line:align
+      modifier: Mongo.Modifier,
+      // tslint:disable-next-line:align
+      options?: { multi?: boolean; }): Observable<number> {
       let observers: Subscriber<number>[] = [];
       let obs = this._createObservable<number>(observers);
 
