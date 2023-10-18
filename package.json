@@ -1,6 +1,6 @@
 {
   "name": "meteor-rxjs",
-  "version": "0.4.14",
+  "version": "0.4.15",
   "description": "Use Meteor API in RxJS style",
   "keywords": [
     "rxjs",
@@ -38,7 +38,7 @@
   "homepage": "http://www.angular-meteor.com",
   "peerDependencies": {
     "@types/meteor": "^1.4.6",
-    "rxjs": "^7.8.0"
+    "rxjs": "^7.8.1"
   },
   "devDependencies": {
     "@types/meteor": "1.4.14",
@@ -46,7 +46,7 @@
     "conventional-changelog-cli": "1.2.0",
     "jsdoc-to-markdown": "3.0.0",
     "rollup": "0.59.4",
-    "rxjs": "7.8.0",
+    "rxjs": "7.8.1",
     "tslint": "5.7.0",
     "typescript": "2.7.2",
     "zone.js": "0.8.20"
