@@ -146,13 +146,13 @@ export module MongoObservable {
       let obs = this._createObservable<number>(observers);
 
       let result, error;
-      
+
       try {
         result = await this._colelction.removeAsync(selector);
       } catch (e) {
         error = e;
       }
-      
+
       observers.forEach(observer => {
         error ? observer.error(error) :
           observer.next(result);
