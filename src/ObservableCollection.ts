@@ -141,14 +141,15 @@ export module MongoObservable {
      *
      * @see {@link https://docs.meteor.com/api/collections.html#Mongo-Collection-remove|remove on Meteor documentation}
      */
-    async remove(selector: Mongo.Selector | Mongo.ObjectID | string): Observable<number> {
+    async remove(selector: Mongo.Selector | Mongo.ObjectID | string): Promise<Observable<number>> {
       let observers: Subscriber<number>[] = [];
       let obs = this._createObservable<number>(observers);
 
       let result, error;
 
       try {
-        result = await this._colelction.removeAsync(selector);
+        //@ts-ignore
+        result = await this._collection.removeAsync(selector);
       } catch (e) {
         error = e;
       }

@@ -1,3 +1,11 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 import { Observable } from 'rxjs';
 import { ObservableCursor } from './ObservableCursor';
 import { removeObserver } from './utils';
@@ -116,16 +124,24 @@ export var MongoObservable;
          * @see {@link https://docs.meteor.com/api/collections.html#Mongo-Collection-remove|remove on Meteor documentation}
          */
         remove(selector) {
-            let observers = [];
-            let obs = this._createObservable(observers);
-            this._collection.remove(selector, (error, removed) => {
+            return __awaiter(this, void 0, void 0, function* () {
+                let observers = [];
+                let obs = this._createObservable(observers);
+                let result, error;
+                try {
+                    //@ts-ignore
+                    result = yield this._collection.removeAsync(selector);
+                }
+                catch (e) {
+                    error = e;
+                }
                 observers.forEach(observer => {
                     error ? observer.error(error) :
-                        observer.next(removed);
+                        observer.next(result);
                     observer.complete();
                 });
+                return obs;
             });
-            return obs;
         }
         /**
          *  Modify one or more documents in the collection.

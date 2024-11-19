@@ -93,7 +93,7 @@ export declare module MongoObservable {
          *
          * @see {@link https://docs.meteor.com/api/collections.html#Mongo-Collection-remove|remove on Meteor documentation}
          */
-        remove(selector: Mongo.Selector | Mongo.ObjectID | string): Observable<number>;
+        remove(selector: Mongo.Selector | Mongo.ObjectID | string): Promise<Observable<number>>;
         /**
          *  Modify one or more documents in the collection.
          *
