@@ -145,14 +145,19 @@ export module MongoObservable {
       let observers: Subscriber<number>[] = [];
       let obs = this._createObservable<number>(observers);
 
-      this._collection.remove(selector,
-        (error: Meteor.Error, removed: number) => {
-          observers.forEach(observer => {
-            error ? observer.error(error) :
-              observer.next(removed);
-            observer.complete();
-          });
-        });
+      let result, error;
+      
+      try {
+        result = await this._colelction.removeAsync(selector);
+      } catch (e) {
+        error = e;
+      }
+      
+      observers.forEach(observer => {
+        error ? observer.error(error) :
+          observer.next(result);
+        observer.complete();
+      });
 
       return obs;
     }
