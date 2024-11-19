@@ -141,7 +141,7 @@ export module MongoObservable {
      *
      * @see {@link https://docs.meteor.com/api/collections.html#Mongo-Collection-remove|remove on Meteor documentation}
      */
-    remove(selector: Mongo.Selector | Mongo.ObjectID | string): Observable<number> {
+    async remove(selector: Mongo.Selector | Mongo.ObjectID | string): Observable<number> {
       let observers: Subscriber<number>[] = [];
       let obs = this._createObservable<number>(observers);
 
