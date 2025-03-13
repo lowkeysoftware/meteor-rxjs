@@ -58,6 +58,14 @@
     }
     const gZone = g.Zone ? g.Zone.current : fakeZone;
 
+    var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+        return new (P || (P = Promise))(function (resolve, reject) {
+            function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+            function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+            function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+            step((generator = generator.apply(thisArg, _arguments || [])).next());
+        });
+    };
     class ObservableCursor extends rxjs.Observable {
         /**
          * @constructor
@@ -151,7 +159,10 @@
          * @return {Array<T>} The array with the matching documents.
          */
         fetch() {
-            return this._cursor.fetch();
+            return __awaiter(this, void 0, void 0, function* () {
+                // @ts-ignore
+                return yield this._cursor.fetchAsync();
+            });
         }
         /**
          * Watch a query. Receive callbacks as the result set changes.
@@ -215,7 +226,7 @@
         }
     }
 
-    var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    var __awaiter$1 = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
         return new (P || (P = Promise))(function (resolve, reject) {
             function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
             function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
@@ -255,6 +266,12 @@
             constructor(nameOrExisting, 
             // tslint:disable-next-line:align
             options) {
+                this.insertAsync = this.insert;
+                this.removeAsync = this.remove;
+                this.updateAsync = this.update;
+                this.upsertAsync = this.upsert;
+                this.findAsync = this.find;
+                this.findOneAsync = this.findOne;
                 if (nameOrExisting instanceof Mongo.Collection) {
                     this._collection = nameOrExisting;
                 }
@@ -317,16 +334,24 @@
              * @see {@link https://docs.meteor.com/api/collections.html#Mongo-Collection-insert|insert on Meteor documentation}
              */
             insert(doc) {
-                let observers = [];
-                let obs = this._createObservable(observers);
-                this._collection.insert(doc, (error, docId) => {
+                return __awaiter$1(this, void 0, void 0, function* () {
+                    let observers = [];
+                    let obs = this._createObservable(observers);
+                    let result, error;
+                    try {
+                        //@ts-ignore
+                        result = yield this._collection.insertAsync(doc);
+                    }
+                    catch (e) {
+                        error = e;
+                    }
                     observers.forEach(observer => {
                         error ? observer.error(error) :
-                            observer.next(docId);
+                            observer.next(result);
                         observer.complete();
                     });
+                    return obs;
                 });
-                return obs;
             }
             /**
              *  Remove documents from the collection.
@@ -337,7 +362,7 @@
              * @see {@link https://docs.meteor.com/api/collections.html#Mongo-Collection-remove|remove on Meteor documentation}
              */
             remove(selector) {
-                return __awaiter(this, void 0, void 0, function* () {
+                return __awaiter$1(this, void 0, void 0, function* () {
                     let observers = [];
                     let obs = this._createObservable(observers);
                     let result, error;
@@ -372,16 +397,24 @@
             modifier, 
             // tslint:disable-next-line:align
             options) {
-                let observers = [];
-                let obs = this._createObservable(observers);
-                this._collection.update(selector, modifier, options, (error, updated) => {
+                return __awaiter$1(this, void 0, void 0, function* () {
+                    let observers = [];
+                    let obs = this._createObservable(observers);
+                    let result, error;
+                    try {
+                        //@ts-ignore
+                        result = yield this._collection.updateAsync(selector, modifier, options);
+                    }
+                    catch (e) {
+                        error = e;
+                    }
                     observers.forEach(observer => {
                         error ? observer.error(error) :
-                            observer.next(updated);
+                            observer.next(result);
                         observer.complete();
                     });
+                    return obs;
                 });
-                return obs;
             }
             /**
              *  Finds the first document that matches the selector, as ordered by sort and skip options.
@@ -400,16 +433,24 @@
             modifier, 
             // tslint:disable-next-line:align
             options) {
-                let observers = [];
-                let obs = this._createObservable(observers);
-                this._collection.upsert(selector, modifier, options, (error, affected) => {
+                return __awaiter$1(this, void 0, void 0, function* () {
+                    let observers = [];
+                    let obs = this._createObservable(observers);
+                    let result, error;
+                    try {
+                        //@ts-ignore
+                        result = yield this._collection.upsertAsync(selector, modifier, options);
+                    }
+                    catch (e) {
+                        error = e;
+                    }
                     observers.forEach(observer => {
                         error ? observer.error(error) :
-                            observer.next(affected);
+                            observer.next(result);
                         observer.complete();
                     });
+                    return obs;
                 });
-                return obs;
             }
             /**
              *  Method has the same notation as Mongo.Collection.find, only returns Observable.
@@ -431,6 +472,7 @@
              * @see {@link https://docs.meteor.com/api/collections.html#Mongo-Collection-find|find on Meteor documentation}
              */
             find(selector, options) {
+                // @ts-ignore
                 const cursor = this._collection.find.apply(this._collection, arguments);
                 return ObservableCursor.create(cursor);
             }
@@ -444,7 +486,8 @@
              * @see {@link https://docs.meteor.com/api/collections.html#Mongo-Collection-findOne|findOne on Meteor documentation}
              */
             findOne(selector, options) {
-                return this._collection.findOne.apply(this._collection, arguments);
+                // @ts-ignore
+                return this._collection.findOneAsync.apply(this._collection, arguments);
             }
             _createObservable(observers) {
                 return rxjs.Observable.create((observer) => {

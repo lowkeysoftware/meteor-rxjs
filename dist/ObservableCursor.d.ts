@@ -50,7 +50,7 @@ export declare class ObservableCursor<T> extends Observable<T[]> {
      *
      * @return {Array<T>} The array with the matching documents.
      */
-    fetch(): Array<T>;
+    fetch(): Promise<T[]>;
     /**
      * Watch a query. Receive callbacks as the result set changes.
      * @param {Mongo.ObserveCallbacks} callbacks - The callbacks object.

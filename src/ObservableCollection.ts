@@ -39,6 +39,13 @@ export module MongoObservable {
    * T is a generic type - should be used with the type of the objects inside the collection.
    */
   export class Collection<T> {
+    public insertAsync = this.insert;
+    public removeAsync = this.remove;
+    public updateAsync = this.update;
+    public upsertAsync = this.upsert;
+    public findAsync = this.find;
+    public findOneAsync = this.findOne;
+
     private _collection: Mongo.Collection<T>;
 
     /**
@@ -118,20 +125,28 @@ export module MongoObservable {
      *
      * @see {@link https://docs.meteor.com/api/collections.html#Mongo-Collection-insert|insert on Meteor documentation}
      */
-    insert(doc: T): Observable<string> {
+    async insert(doc: T): Promise<Observable<string>> {
       let observers: Subscriber<string>[] = [];
       let obs = this._createObservable<string>(observers);
 
-      this._collection.insert(doc,
-        (error: Meteor.Error, docId: string) => {
-          observers.forEach(observer => {
-            error ? observer.error(error) :
-              observer.next(docId);
-            observer.complete();
-          });
-        });
+      let result, error;
+
+      try {
+        //@ts-ignore
+        result = await this._collection.insertAsync(doc);
+      } catch (e) {
+        error = e;
+      }
+
+      observers.forEach(observer => {
+        error ? observer.error(error) :
+          observer.next(result);
+        observer.complete();
+      });
+
       return obs;
     }
+
 
     /**
      *  Remove documents from the collection.
@@ -163,6 +178,7 @@ export module MongoObservable {
       return obs;
     }
 
+
     /**
      *  Modify one or more documents in the collection.
      *
@@ -174,25 +190,32 @@ export module MongoObservable {
      *
      * @see {@link https://docs.meteor.com/api/collections.html#Mongo-Collection-update|update on Meteor documentation}
      */
-    update(selector: Mongo.Selector | Mongo.ObjectID | string,
+    async update(selector: Mongo.Selector | Mongo.ObjectID | string,
       // tslint:disable-next-line:align
       modifier: Mongo.Modifier,
       // tslint:disable-next-line:align
-      options?: { multi?: boolean; upsert?: boolean; }): Observable<number> {
+      options?: { multi?: boolean; upsert?: boolean; }): Promise<Observable<number>> {
       let observers: Subscriber<number>[] = [];
       let obs = this._createObservable<number>(observers);
 
-      this._collection.update(selector, modifier, options,
-        (error: Meteor.Error, updated: number) => {
-          observers.forEach(observer => {
-            error ? observer.error(error) :
-              observer.next(updated);
-            observer.complete();
-          });
-        });
+      let result, error;
+
+      try {
+        //@ts-ignore
+        result = await this._collection.updateAsync(selector, modifier, options);
+      } catch (e) {
+        error = e;
+      }
+
+      observers.forEach(observer => {
+        error ? observer.error(error) :
+          observer.next(result);
+        observer.complete();
+      });
 
       return obs;
     }
+
 
     /**
      *  Finds the first document that matches the selector, as ordered by sort and skip options.
@@ -206,25 +229,32 @@ export module MongoObservable {
      *
      * @see {@link https://docs.meteor.com/api/collections.html#Mongo-Collection-upsert|upsert on Meteor documentation}
      */
-    upsert(selector: Mongo.Selector | Mongo.ObjectID | string,
+    async upsert(selector: Mongo.Selector | Mongo.ObjectID | string,
       // tslint:disable-next-line:align
       modifier: Mongo.Modifier,
       // tslint:disable-next-line:align
-      options?: { multi?: boolean; }): Observable<number> {
+      options?: { multi?: boolean; }): Promise<Observable<number>> {
       let observers: Subscriber<number>[] = [];
       let obs = this._createObservable<number>(observers);
 
-      this._collection.upsert(selector, modifier, options,
-        (error: Meteor.Error, affected: number) => {
-          observers.forEach(observer => {
-            error ? observer.error(error) :
-              observer.next(affected);
-            observer.complete();
-          });
-        });
+      let result, error;
+
+      try {
+        //@ts-ignore
+        result = await this._collection.upsertAsync(selector, modifier, options);
+      } catch (e) {
+        error = e;
+      }
+
+      observers.forEach(observer => {
+        error ? observer.error(error) :
+          observer.next(result);
+        observer.complete();
+      });
 
       return obs;
     }
+
 
     /**
      *  Method has the same notation as Mongo.Collection.find, only returns Observable.
@@ -253,10 +283,12 @@ export module MongoObservable {
       reactive?: boolean;
       transform?: Function;
     }): ObservableCursor<T> {
+      // @ts-ignore
       const cursor = this._collection.find.apply(
         this._collection, arguments);
       return ObservableCursor.create<T>(cursor);
     }
+
 
     /**
      *  Finds the first document that matches the selector, as ordered by sort and skip options.
@@ -274,9 +306,11 @@ export module MongoObservable {
       reactive?: boolean;
       transform?: Function;
     }): T {
-      return this._collection.findOne.apply(
+      // @ts-ignore
+      return this._collection.findOneAsync.apply(
         this._collection, arguments);
     }
+
 
     private _createObservable<T>(observers: Subscriber<T>[]) {
       return Observable.create((observer: Subscriber<T>) => {

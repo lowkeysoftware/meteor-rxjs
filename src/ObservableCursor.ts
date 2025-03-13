@@ -111,8 +111,9 @@ export class ObservableCursor<T> extends Observable<T[]> {
    *
    * @return {Array<T>} The array with the matching documents.
    */
-  fetch(): Array<T> {
-    return this._cursor.fetch();
+  async fetch(): Promise<T[]> {
+    // @ts-ignore
+    return await this._cursor.fetchAsync();
   }
 
   /**

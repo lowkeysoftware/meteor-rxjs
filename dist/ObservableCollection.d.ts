@@ -30,6 +30,30 @@ export declare module MongoObservable {
      * T is a generic type - should be used with the type of the objects inside the collection.
      */
     class Collection<T> {
+        insertAsync: (doc: T) => Promise<any>;
+        removeAsync: (selector: string | Mongo.Selector | Mongo.ObjectID) => Promise<any>;
+        updateAsync: (selector: string | Mongo.Selector | Mongo.ObjectID, modifier: Mongo.Modifier, options?: {
+            multi?: boolean;
+            upsert?: boolean;
+        }) => Promise<any>;
+        upsertAsync: (selector: string | Mongo.Selector | Mongo.ObjectID, modifier: Mongo.Modifier, options?: {
+            multi?: boolean;
+        }) => Promise<any>;
+        findAsync: (selector?: string | Mongo.Selector | Mongo.ObjectID, options?: {
+            sort?: Mongo.SortSpecifier;
+            skip?: number;
+            limit?: number;
+            fields?: Mongo.FieldSpecifier;
+            reactive?: boolean;
+            transform?: Function;
+        }) => ObservableCursor<T>;
+        findOneAsync: (selector?: string | Mongo.Selector | Mongo.ObjectID, options?: {
+            sort?: Mongo.SortSpecifier;
+            skip?: number;
+            fields?: Mongo.FieldSpecifier;
+            reactive?: boolean;
+            transform?: Function;
+        }) => T;
         private _collection;
         /**
          *  Creates a new Mongo.Collection instance wrapped with Observable features.
@@ -84,7 +108,7 @@ export declare module MongoObservable {
          *
          * @see {@link https://docs.meteor.com/api/collections.html#Mongo-Collection-insert|insert on Meteor documentation}
          */
-        insert(doc: T): Observable<string>;
+        insert(doc: T): Promise<Observable<string>>;
         /**
          *  Remove documents from the collection.
          *
@@ -108,7 +132,7 @@ export declare module MongoObservable {
         update(selector: Mongo.Selector | Mongo.ObjectID | string, modifier: Mongo.Modifier, options?: {
             multi?: boolean;
             upsert?: boolean;
-        }): Observable<number>;
+        }): Promise<Observable<number>>;
         /**
          *  Finds the first document that matches the selector, as ordered by sort and skip options.
          *
@@ -123,7 +147,7 @@ export declare module MongoObservable {
          */
         upsert(selector: Mongo.Selector | Mongo.ObjectID | string, modifier: Mongo.Modifier, options?: {
             multi?: boolean;
-        }): Observable<number>;
+        }): Promise<Observable<number>>;
         /**
          *  Method has the same notation as Mongo.Collection.find, only returns Observable.
          *
